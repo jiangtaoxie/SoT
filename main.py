@@ -320,8 +320,8 @@ def main():
         _logger.info('Model %s created, param count: %d' %
                      (args.model, sum([m.numel() for m in model.parameters()])))
     iinput = torch.randn(1, 3, args.img_size, args.img_size)
-    flops, params = profile(model, (iinput,))
-    print('flops:',flops*1e-9, 'params:',params*1e-6)
+    #flops, params = profile(model, (iinput,))
+    #print('flops:',flops*1e-9, 'params:',params*1e-6)
 
     #import pdb;pdb.set_trace()
     data_config = resolve_data_config(vars(args), model=model, verbose=args.local_rank == 0)
