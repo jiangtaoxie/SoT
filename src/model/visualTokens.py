@@ -245,13 +245,14 @@ class DenseNetStyleModule(baseConvModule):
             token_dim=token_dim
         )
         self.stage = nn.Sequential(
-            DenseBlock(num_layers=3, num_input_features=64, bn_size=2, growth_rate=24),
-            DenseTransition(num_input_features=136, num_output_features=128),
-            DenseBlock(num_layers=3, num_input_features=128, bn_size=2, growth_rate=24),
-            DenseTransition(num_input_features=200, num_output_features=128),
-            DenseBlock(num_layers=3, num_input_features=128, bn_size=2, growth_rate=24),
+            DenseBlock(num_layers=6, num_input_features=64, bn_size=2, growth_rate=16),
+            DenseTransition(num_input_features=160, num_output_features=128),
+            DenseBlock(num_layers=6, num_input_features=128, bn_size=2, growth_rate=16),
+            DenseTransition(num_input_features=224, num_output_features=128),
+            DenseBlock(num_layers=6, num_input_features=128, bn_size=2, growth_rate=16),
+            DenseTransition(num_input_features=224, num_output_features=128),
         )
-        self.transition = nn.Conv2d(200, embed_dim, kernel_size=(1,1), stride=(1, 1))
+        self.transition = nn.Conv2d(128, embed_dim, kernel_size=(1,1), stride=(1, 1))
 
 class NonlocalStyleModule(baseConvModule):
     def __init__(self, img_size=224, in_chans=3, embed_dim=768, token_dim=64):
