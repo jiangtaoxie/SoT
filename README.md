@@ -7,7 +7,7 @@
 
 ## Introduction
 
-This repository contains the source code under **PyTorch** framework and models trained on ImageNet-1K dataset for the following paper:
+This repository contains the source code under **PyTorch** framework and models trained on ImageNet-1K dataset for the following [paper](https://arxiv.org/pdf/2104.10935.pdf):
 
     @articles{So-ViT,
         author = {Jiangtao Xie, Ruiren Zeng, Qilong Wang, Ziqi Zhou, Peihua Li},
