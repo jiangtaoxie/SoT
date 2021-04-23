@@ -19,14 +19,14 @@ This repository contains the source code under **PyTorch** framework and models 
 The Vision Transformer ([ViT](https://arxiv.org/pdf/2010.11929.pdf)) heavily depends on pretraining using ultra large-scale datasets (e.g. ImageNet-21K or JFT-300M) to achieve high performance, while significantly underperforming on *ImageNet-1K if trained from scratch*. We propose a novel So-ViT model toward addressing this problem, by carefully considering the *role of visual tokens*. 
 
 
-Above all, for classification head, the ViT only exploits class token while entirely neglecting rich semantic information inherent in high-level visual tokens. Therefore, we propose a new   classification paradigm, where the second-order, cross-covariance pooling of visual tokens is combined with class token for final classification. Meanwhile, a fast singular value power normalization is proposed for improving the second-order pooling. 
+***Above all***, for classification head, the ViT only exploits class token while entirely neglecting rich semantic information inherent in high-level visual tokens. Therefore, we propose a new   classification paradigm, where the second-order, cross-covariance pooling of visual tokens is combined with class token for final classification. Meanwhile, a fast singular value power normalization is proposed for improving the second-order pooling. 
 
   
 ***Second***, the ViT employs the naïve method of one linear projection of fixed-size image patches for visual token embedding, lacking the ability to model translation equivariance and locality. To alleviate this problem, we develop a light-weight, hierarchical module based on off-the-shelf convolutions for visual token embedding. 
 
 ## Classification results
 
-#### Classification results (single crop 224x224, %) on ImageNet 2012 validation set
+#### Classification results (single crop 224x224, %) on ImageNet-1K validation set
  <table>
          <tr>
              <th rowspan="2" style="text-align:center;">Network</th>
