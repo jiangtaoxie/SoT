@@ -12,7 +12,7 @@ This repository contains the source code under **PyTorch** framework and models 
     @articles{So-ViT,
         author = {Jiangtao Xie, Ruiren Zeng, Qilong Wang, Ziqi Zhou, Peihua Li},
         title = {So-ViT: Mind Visual Tokens for Vision Transformer},
-        booktitle = {arxiv},
+        booktitle = {arXiv:2104.10935},
         year = {2021}
     }
 
