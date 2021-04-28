@@ -37,35 +37,35 @@ The Vision Transformer ([ViT](https://arxiv.org/pdf/2010.11929.pdf)) heavily dep
          <td style="text-align:center;">Paper reported</td>
              <td style="text-align:center;"> Upgrade </td>
              <td style="text-align:center;">GoogleDrive</td>
-             <td style="text-align:center;">BaiduCloud</td>
+             <td style="text-align:center;">Aliyun</td>
          </tr>
          <tr>
              <td style="text-align:center">So-ViT-7</td>
              <td style="text-align:center;">76.2</td>
              <td style="text-align:center;">76.8</td>
-             <td style="text-align:center;"><a href="https://">Coming soon</a></td>
-             <td style="text-align:center;"><a href="https://">Coming soon</a></td>
+             <td style="text-align:center;"><a href="https://drive.google.com/file/d/1-MTuAbQ-T6skfqHEYrhb9BmitG1iu5SY/view?usp=sharing">85.08MB</a></td>
+             <td style="text-align:center;"><a href="https://jiangtaoxie.oss-cn-beijing.aliyuncs.com/So-ViT/So-ViT-7.pth.tar?versionId=CAEQAhiBgIDLutbayBciIGI0ZDEwN2ZiZjk3MjQxMjY5ODQxMTU3OGYxZjYzZWYz">85.08MB</a></td>
          </tr>
          <tr>
              <td style="text-align:center">So-ViT-10</td>
              <td style="text-align:center;">77.9</td>
              <td style="text-align:center;">78.7</td>
-             <td style="text-align:center;"><a href="https://">Coming soon</a></td>
-             <td style="text-align:center;"><a href="https://">Coming soon</a></td>
+             <td style="text-align:center;"><a href="https://drive.google.com/file/d/1biRaP_m8NR48buFEQQwCRQphR_Nz5Sjw/view?usp=sharing">109.24MB</a></td>
+             <td style="text-align:center;"><a href="https://jiangtaoxie.oss-cn-beijing.aliyuncs.com/So-ViT/So-ViT-10.pth.tar?versionId=CAEQAhiBgMDHutbayBciIDViOTY5ZDFlNTI0ZDQ5NWNhM2IxMTA3OWU4OTlmMmUw">109.24MB</a></td>
          </tr>
          <tr>
              <td style="text-align:center">So-ViT-14</td>
              <td style="text-align:center;">81.8</td>
              <td style="text-align:center;">82.3</td>
-             <td style="text-align:center;"><a href="https://">Coming soon</a></td>
-             <td style="text-align:center;"><a href="https://">Coming soon</a></td>
+             <td style="text-align:center;"><a href="https://drive.google.com/file/d/1A85Rlnaaya9GEpraaEKJsSaGsdqHU5YO/view?usp=sharing">377.09MB</a></td>
+             <td style="text-align:center;"><a href="https://jiangtaoxie.oss-cn-beijing.aliyuncs.com/So-ViT/So-ViT-14.pth.tar?versionId=CAEQAhiBgIDDutbayBciIGM1YjBlOTIxMjYyNDRhMjY4MjE1MzgxMDcyMjEyNTM1">377.09MB</a></td>
          </tr>
          <tr>
              <td style="text-align:center">So-ViT-19</td>
              <td style="text-align:center;">82.4</td>
              <td style="text-align:center;">82.8</td>
-             <td style="text-align:center;"><a href="https://">Coming soon</a></td>
-             <td style="text-align:center;"><a href="https://">Coming soon</a></td>
+             <td style="text-align:center;"><a href="https://drive.google.com/file/d/1Jv2lYVzJ5lY909MHYP3YORhAVsKxUAC9/view?usp=sharing">669.60MB</a></td>
+             <td style="text-align:center;"><a href="https://jiangtaoxie.oss-cn-beijing.aliyuncs.com/So-ViT/So-ViT-19.pth.tar?versionId=CAEQAhiCgIDDutbayBciIGFkNGQ1ODUzNmQxZDRmYmU5YjQ1NzkxNDVmMTJjZDg0">669.60MB</a></td>
          </tr>
 </table>
 
