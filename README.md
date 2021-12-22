@@ -31,7 +31,7 @@ Please consider cite the paper if it's useful for you.
     @articles{SoT,
         author = {Jiangtao Xie, Ruiren Zeng, Qilong Wang, Ziqi Zhou, Peihua Li},
         title = {SoT: Delving Deeper into Classification Head for Transformer},
-        booktitle = {arXiv:2104.10935},
+        booktitle = {arXiv:2104.10935v2},
         year = {2021}
     }
 
