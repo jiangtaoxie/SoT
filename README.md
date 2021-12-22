@@ -256,7 +256,7 @@ We make the further analysis by visualizing the models for CV and NLP tasks, whe
 - **WordT**: only word tokens are used for classifier
 - **ClassT+WordT**: both classification token and word tokens are used for classifier based on the sum scheme.
 
-<p align="center" style="color:rgb(255,0,0);">&#10004 :<font color="black">correct prediction</font>; &#10007: <font color="black">incorrect prediction</font></p>
+<p align="center" style="color:rgb(255,0,0);">&radic :<font color="black">correct prediction</font>; &#10007: <font color="black">incorrect prediction</font></p>
 
 
 <div>
