@@ -190,7 +190,7 @@ Accuracy (single crop 224x224, %) on the validation set of ImageNet-1K and Image
 
 ### Our SoT family
 
-| Model | ImageNet Top-1 Acc. |ImageNet-A Top-1 Acc. | #params (M) | GFLOPs | Pre-trained model |
+| Backbone | ImageNet Top-1 Acc. |ImageNet-A Top-1 Acc. | #Params (M) | GFLOPs | Weight |
 |:--:|:-------:|:----------:|:------:|:------:|:------:|
 | SoT-Tiny | 80.3 | 21.5 | 7.7 | 2.5 | [Coming soon]() |
 | SoT-Small | 82.7 | 31.8 | 26.9 | 5.8 | [Coming soon]() |
@@ -198,7 +198,7 @@ Accuracy (single crop 224x224, %) on the validation set of ImageNet-1K and Image
 
 ### DeiT family
 
-| Model | ImageNet Top-1 Acc. |ImageNet-A Top-1 Acc. | #params (M) | GFLOPs | Pre-trained model |
+| Backbone | ImageNet Top-1 Acc. |ImageNet-A Top-1 Acc. | #Params (M) | GFLOPs | Weight |
 |:--:|:-------:|:----------:|:------:|:------:|:------:|
 | DeiT-T | 72.2 | 7.3 | 5.7 | 1.3 | [model](https://dl.fbaipublicfiles.com/deit/deit_tiny_patch16_224-a1311bcf.pth) |
 | DeiT-T + ours | 78.6 | 17.5 | 7.0 | 2.3 | [Coming soon]() |
@@ -209,7 +209,7 @@ Accuracy (single crop 224x224, %) on the validation set of ImageNet-1K and Image
 
 ### Swin Transformer family
 
-| Model | ImageNet Top-1 Acc. |ImageNet-A Top-1 Acc. | #params (M) | GFLOPs | Pre-trained model |
+| Backbone | ImageNet Top-1 Acc. |ImageNet-A Top-1 Acc. | #Params (M) | GFLOPs | Weight |
 |:--:|:-------:|:----------:|:------:|:------:|:------:|
 | Swin-T | 81.3 | 21.6 | 28.3 | 4.5 |[model](https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_tiny_patch4_window7_224.pth) |
 | Swin-T + ours | 83.0 | 33.5 | 31.6 | 6.0 | [Coming soon]() |
@@ -229,7 +229,7 @@ Accuracy (Top-1, %) on the 4 selected tasks from General Language Understanding 
 - MNLI (The Multi-Genre Natural Language Inference Corpus): the task is to classify the given pair of sentences from multi-source is entailment, contradiction or neutral.
 - QNLI (Qusetion-answering Natural Language Inference Corpus): the task is to decide the question-answer sentence pair is entailment or not.
 
-| Model | CoLA | RTE | MNLI | QNLI | Pre-trained model |
+| Backbone | CoLA | RTE | MNLI | QNLI | Weight |
 |:--:|:-------:|:----------:|:------:|:------:|:------:|
 | GPT | 54.32 | 63.17 | 82.10 | 86.36 | [model](https://github.com/openai/finetune-transformer-lm/tree/master/model) |
 | GPT + ours| 57.25 | 65.35 | 82.41 | 87.13 | [Coming soon]() |
@@ -256,7 +256,7 @@ We make the further analysis by visualizing the models for CV and NLP tasks, whe
 - **WordT**: only word tokens are used for classifier
 - **ClassT+WordT**: both classification token and word tokens are used for classifier based on the sum scheme.
 
-<p align="center" style="color:rgb(255,0,0);">&radic; :<font color="black">correct prediction</font>; &#10007; : <font color="black">incorrect prediction</font></p>
+<p align="center" style="color:rgb(255,0,0);">&radic;:<font color="black"> correct prediction;</font> &#10007;: <font color="black">incorrect prediction</font></p>
 
 
 <div>
