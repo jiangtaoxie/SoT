@@ -24,24 +24,11 @@ class svPN(nn.Module):
         self.vec = vec
         self.input_dim = input_dim
         self.regular = regular
-        if self.vec is not None:
-            if self.vec == 'triu':
-                self.output_dim = int(self.input_dim[0]*(self.input_dim[1]+1)/2)
-            elif self.vec == 'full':
-                self.output_dim = int(self.input_dim[0]*self.input_dim[1])
-        else:
-            self.output_dim = (self.input_dim, self.input_dim)
         self._init_weight()
 
     def _init_weight(self):
-        for m in self.modules():
-            if isinstance(m, nn.Conv2d):
-                nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
-            elif isinstance(m, nn.BatchNorm2d):
-                nn.init.constant_(m.weight, 1)
-                nn.init.constant_(m.bias, 0)
         if self.init_weight == 'learn':
-            self.weight = nn.Parameter(torch.randn(self.input_dim[0]))
+            self.weight = nn.Parameter(torch.randn(self.input_dim))
         else:
             self.weight = None
 
@@ -51,8 +38,7 @@ class svPN(nn.Module):
         return x
         
     def _singularValuePowerNorm(self, x, top=None):
-        batchsize, d, N = x.size()
-        x = x.view(x.size(0), d, N).transpose(1, 2)  # bs, N, d
+        batchsize, N, d = x.size()
         if top is None:
             top = min(N, d)
             norm_remain = False
@@ -67,8 +53,7 @@ class svPN(nn.Module):
             x = x - u.bmm(s).bmm(v.transpose(1, 2)) # u*s*v.^{T}
         y = U.bmm(S.pow(self.alpha)).bmm(V.transpose(1,2)) # U*S.^{\alpha}*V.^{T}
         if norm_remain:
-            y = y + x.div(s.pow(1 - self.alpha) + 1e-5) 
-        y = y.transpose(1, 2)
+            y = y + x.div(s.pow(1 - self.alpha) + 1e-5)
         return y
 
     def _powerIteration(self, x, uv=False):

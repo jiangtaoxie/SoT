@@ -43,6 +43,7 @@ class MPN(nn.Module):
          return Triuvec.apply(x)
 
      def forward(self, x):
+        # import pdb;pdb.set_trace()
         x = self._sqrtm(x)
         x = self._triuvec(x)
         x = x.view(x.shape[0], -1)

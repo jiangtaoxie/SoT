@@ -11,14 +11,15 @@ from timm.models.densenet import DenseTransition
 
 import numpy as np
 from torch.nn import functional as F
-from .model.classifier import Classifier
-from .model.visualTokens import visualTokens, Bottleneck
-from .model.vitBlock import ViTBlock, get_sinusoid_encoding
+from .model import Classifier
+from .model import TokenEmbed
+from .model import ViTBlock, get_sinusoid_encoding
 
 
 visualTokenConfig = dict(
-    type='ResNet',
+    type='DenseNet',
     token_dim = 64,
+    large_output = False,
 )
 
 ViTConfig = dict(
@@ -34,40 +35,37 @@ ViTConfig = dict(
 )
 
 representationConfig = dict(
-    type='second-order',
+    type='MGCrP',
+    fusion_type='sum_fc',
     args=dict(
-        cov_type='cross',
-        remove_mean=True,
-        dimension_reduction=[64, 48],
-        input_dim=384,
-    ),
-    normalization=dict(
-        type='svPN',
-        args=dict(
+        dim=384,
+        num_heads=6,
+        wr_dim=24,
+        normalization=dict(
+            type='svPN',
             alpha=0.5,
             iterNum=1,
             svNum=1,
             regular=nn.Dropout(0.5),
-            vec='full',
-            input_dim=48,
-        ),
+            input_dim=24,
+        )
     ),
 )
 
 
 
-class So_ViT(nn.Module):
+class SoT(nn.Module):
     def __init__(self,
             img_size=224, 
             in_chans=3, 
             num_classes=1000,
             drop_rate=0.,
             drop_path_rate=0.,
-            norm_layer=nn.LayerNorm, 
+            norm_layer=nn.LayerNorm,
             visualTokenConfig=visualTokenConfig,
             ViTConfig=ViTConfig, 
             representationConfig=representationConfig):
-        super(So_ViT, self).__init__()
+        super(SoT, self).__init__()
         self.num_classes = num_classes
         self.embed_dim = ViTConfig['embed_dim']
         self.depth = ViTConfig['depth']
@@ -75,7 +73,7 @@ class So_ViT(nn.Module):
         #-------------
         # Build SO-ViT
         #-------------
-        self.visual_tokens = visualTokens(img_size=img_size, in_chans=in_chans, embed_dim=self.embed_dim, visualTokenConfig=visualTokenConfig)
+        self.visual_tokens = TokenEmbed(img_size=img_size, in_chans=in_chans, embed_dim=self.embed_dim, visualTokenConfig=visualTokenConfig)
         dpr = [x.item() for x in torch.linspace(0, drop_path_rate, self.depth)] 
         self.blocks = nn.ModuleList([ViTBlock(drop=drop_rate, drop_path=dpr[i], **ViTConfig) for i in range(self.depth)])
         self.classifier = Classifier(num_classes=num_classes, input_dim=self.embed_dim, representationConfig=representationConfig)
@@ -112,65 +110,59 @@ class So_ViT(nn.Module):
         x = self.classifier(x)
         return x
 
-@register_model
-def So_vit_19(pretrained=False, **kwargs):  
-    ViTConfig['embed_dim']=448
-    ViTConfig['depth']=19
-    ViTConfig['num_heads']=7
-    ViTConfig['mlp_ratio']=3.
-    representationConfig['args']['dimension_reduction']=[96, 48]
-    representationConfig['args']['input_dim']=448
-    representationConfig['normalization']['args']['input_dim']=representationConfig['args']['dimension_reduction']
-    if pretrained:
-        kwargs.setdefault('qk_scale', 448 ** -0.5)
-    model = So_ViT(visualTokenConfig=visualTokenConfig, ViTConfig=ViTConfig, representationConfig=representationConfig, **kwargs)
-    if pretrained:
-        load_pretrained(
-            model, num_classes=model.num_classes, in_chans=kwargs.get('in_chans', 3))
-    return model
 
 @register_model
-def So_vit_14(pretrained=False, **kwargs):
-    representationConfig['normalization']['args']['input_dim']=representationConfig['args']['dimension_reduction']
-    if pretrained:
-        kwargs.setdefault('qk_scale', 384 ** -0.5)
-    model = So_ViT(visualTokenConfig=visualTokenConfig, ViTConfig=ViTConfig, representationConfig=representationConfig, **kwargs)
-    if pretrained:
-        load_pretrained(
-            model, num_classes=model.num_classes, in_chans=kwargs.get('in_chans', 3))
-    return model
-
-@register_model
-def So_vit_10(pretrained=False, **kwargs):  
-    ViTConfig['embed_dim']=256
-    ViTConfig['depth']=10
+def SoT_Tiny(pretrained=False, **kwargs):
+    ViTConfig['embed_dim']=240
+    ViTConfig['depth']=12
     ViTConfig['num_heads']=4
-    ViTConfig['mlp_ratio']=2.
-    representationConfig['args']['dimension_reduction']=[48, 24]
-    representationConfig['args']['input_dim']=256
-    representationConfig['normalization']['args']['regular']=None
-    representationConfig['normalization']['args']['input_dim']=representationConfig['args']['dimension_reduction']
+    ViTConfig['mlp_ratio']=2.5
+    representationConfig['args']['dim']=240
+    representationConfig['args']['num_heads']=6
+    representationConfig['args']['wr_dim']=14
+    representationConfig['args']['normalization']['input_dim']=14
+    representationConfig['args']['normalization']['regular']=None
     if pretrained:
         kwargs.setdefault('qk_scale', 256 ** -0.5)
-    model = So_ViT(visualTokenConfig=visualTokenConfig, ViTConfig=ViTConfig, representationConfig=representationConfig, **kwargs)
+    model = SoT(visualTokenConfig=visualTokenConfig, ViTConfig=ViTConfig, representationConfig=representationConfig, **kwargs)
     if pretrained:
         load_pretrained(
             model, num_classes=model.num_classes, in_chans=kwargs.get('in_chans', 3))
     return model
 
 @register_model
-def So_vit_7(pretrained=False, **kwargs):  
-    ViTConfig['embed_dim']=256
-    ViTConfig['depth']=7
-    ViTConfig['num_heads']=4
-    ViTConfig['mlp_ratio']=2.
-    representationConfig['args']['dimension_reduction']=[48, 24]
-    representationConfig['args']['input_dim']=256
-    representationConfig['normalization']['args']['regular']=None
-    representationConfig['normalization']['args']['input_dim']=representationConfig['args']['dimension_reduction']
+def SoT_Small(pretrained=False, **kwargs):
+    ViTConfig['embed_dim']=384
+    ViTConfig['depth']=14
+    ViTConfig['num_heads']=6
+    ViTConfig['mlp_ratio']=3.5
+    representationConfig['args']['dim']=384
+    representationConfig['args']['num_heads']=6
+    representationConfig['args']['wr_dim']=24
+    representationConfig['args']['normalization']['input_dim']=24
+    representationConfig['args']['normalization']['regular']=nn.Dropout(0.5)
     if pretrained:
         kwargs.setdefault('qk_scale', 256 ** -0.5)
-    model = So_ViT(visualTokenConfig=visualTokenConfig, ViTConfig=ViTConfig, representationConfig=representationConfig, **kwargs)
+    model = SoT(visualTokenConfig=visualTokenConfig, ViTConfig=ViTConfig, representationConfig=representationConfig, **kwargs)
+    if pretrained:
+        load_pretrained(
+            model, num_classes=model.num_classes, in_chans=kwargs.get('in_chans', 3))
+    return model
+
+@register_model
+def SoT_Base(pretrained=False, **kwargs):
+    ViTConfig['embed_dim']=528
+    ViTConfig['depth']=24
+    ViTConfig['num_heads']=8
+    ViTConfig['mlp_ratio']=3
+    representationConfig['args']['dim']=528
+    representationConfig['args']['num_heads']=6
+    representationConfig['args']['wr_dim']=38
+    representationConfig['args']['normalization']['input_dim']=38
+    representationConfig['args']['normalization']['regular']=nn.Dropout(0.7)
+    if pretrained:
+        kwargs.setdefault('qk_scale', 256 ** -0.5)
+    model = SoT(visualTokenConfig=visualTokenConfig, ViTConfig=ViTConfig, representationConfig=representationConfig, **kwargs)
     if pretrained:
         load_pretrained(
             model, num_classes=model.num_classes, in_chans=kwargs.get('in_chans', 3))

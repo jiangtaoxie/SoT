@@ -48,6 +48,7 @@ class Attention(nn.Module):
         x = self.proj_drop(x)
         return x
 
+
 class ViTBlock(nn.Module):
 
     def __init__(self, embed_dim, num_heads, mlp_ratio=4., qkv_bias=False, qk_scale=None, drop=0., attn_drop=0.,

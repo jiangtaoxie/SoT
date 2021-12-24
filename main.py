@@ -11,7 +11,7 @@ import logging
 from collections import OrderedDict
 from contextlib import suppress
 from datetime import datetime
-import src
+import sot_src
 from thop import profile
 
 import torch
@@ -26,7 +26,7 @@ from timm.loss import LabelSmoothingCrossEntropy, SoftTargetCrossEntropy, JsdCro
 from timm.optim import create_optimizer
 from timm.scheduler import create_scheduler
 from timm.utils import ApexScaler, NativeScaler
-#from dataset import ImageNet
+
 
 
 torch.backends.cudnn.benchmark = True
@@ -38,12 +38,12 @@ config_parser = parser = argparse.ArgumentParser(description='Training Config', 
 parser.add_argument('-c', '--config', default='', type=str, metavar='FILE',
                     help='YAML config file specifying default arguments')
 
-parser = argparse.ArgumentParser(description='T2T-ViT Training and Evaluating')
+parser = argparse.ArgumentParser(description='SoT Training and Evaluating')
 
 # Dataset / Model parameters
 parser.add_argument('data', metavar='DIR',
                     help='path to dataset')
-parser.add_argument('--model', default='So_vit_14', type=str, metavar='MODEL',
+parser.add_argument('--model', default='SoT_Tiny', type=str, metavar='MODEL',
                     help='Name of model to train (default: "countception"')
 parser.add_argument('--pretrained', action='store_true', default=False,
                     help='Start with pretrained version of specified network (if avail)')
@@ -443,7 +443,6 @@ def main():
 
     
     dataset_train = Dataset(train_dir)
-    # dataset_train = ImageNet(isTrain=True)
     collate_fn = None
     mixup_fn = None
     mixup_active = args.mixup > 0 or args.cutmix > 0. or args.cutmix_minmax is not None
@@ -500,7 +499,6 @@ def main():
             exit(1)
     
     dataset_eval = Dataset(eval_dir)
-    # dataset_eval = ImageNet(isTrain=False)
 
     loader_eval = create_loader(
         dataset_eval,
@@ -735,13 +733,11 @@ def validate(model, loader, loss_fn, args, amp_autocast=suppress, log_suffix='')
             if args.channels_last:
                 input = input.contiguous(memory_format=torch.channels_last)
             with amp_autocast():
-                #import pdb;pdb.set_trace()
                 if not args.loss_add:
                     output = model(input)
                 else:
                     x, head = model(input)
                     output = x + head
-            # import pdb; pdb.set_trace()
             
             if isinstance(output, (tuple, list)):
                 output = output[0]
