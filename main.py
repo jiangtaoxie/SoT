@@ -19,14 +19,14 @@ import torch.nn as nn
 import torchvision.utils
 from torch.nn.parallel import DistributedDataParallel as NativeDDP
 
-from timm.data import  Dataset, create_loader, resolve_data_config, Mixup, FastCollateMixup, AugMixDataset
+from timm.data import  create_loader, resolve_data_config, Mixup, FastCollateMixup, AugMixDataset
 from timm.models import load_checkpoint, create_model, resume_checkpoint, convert_splitbn_model
 from timm.utils import *
 from timm.loss import LabelSmoothingCrossEntropy, SoftTargetCrossEntropy, JsdCrossEntropy
 from timm.optim import create_optimizer
 from timm.scheduler import create_scheduler
 from timm.utils import ApexScaler, NativeScaler
-
+from torchvision import datasets
 
 
 torch.backends.cudnn.benchmark = True
@@ -320,8 +320,9 @@ def main():
         _logger.info('Model %s created, param count: %d' %
                      (args.model, sum([m.numel() for m in model.parameters()])))
     iinput = torch.randn(1, 3, args.img_size, args.img_size)
-    #flops, params = profile(model, (iinput,))
-    #print('flops:',flops*1e-9, 'params:',params*1e-6)
+    from copy import deepcopy
+    flops, params = profile(deepcopy(model), (iinput,))
+    print('flops:',flops*1e-9, 'params:',params*1e-6)
 
     #import pdb;pdb.set_trace()
     data_config = resolve_data_config(vars(args), model=model, verbose=args.local_rank == 0)
@@ -442,7 +443,7 @@ def main():
         exit(1)
 
     
-    dataset_train = Dataset(train_dir)
+    dataset_train = datasets.ImageFolder(train_dir)
     collate_fn = None
     mixup_fn = None
     mixup_active = args.mixup > 0 or args.cutmix > 0. or args.cutmix_minmax is not None
@@ -498,7 +499,7 @@ def main():
             _logger.error('Validation folder does not exist at: {}'.format(eval_dir))
             exit(1)
     
-    dataset_eval = Dataset(eval_dir)
+    dataset_eval = datasets.ImageFolder(eval_dir)
 
     loader_eval = create_loader(
         dataset_eval,
@@ -532,10 +533,6 @@ def main():
     best_epoch = None
     
     if args.eval_checkpoint:  # evaluate the model
-        #ck_path = '/home/xiejiangtao/data/experiments/T2T-ViT/Conv4_vit_7_checkpoints/'
-        #base = 'checkpoint-'
-        #for i in range(0, 310):
-            #eval_checkpoint = ck_path + base + str(i) + '.pth.tar'
         load_checkpoint(model, args.eval_checkpoint, args.model_ema) 
         val_metrics = validate(model, loader_eval, validate_loss_fn, args) 
         print(f"Top-1 accuracy of the model is: {val_metrics['top1']:.1f}%")
@@ -695,10 +692,6 @@ def train_epoch(
                         os.path.join(output_dir, 'train-batch-%d.jpg' % batch_idx),
                         padding=0,
                         normalize=True)
-        #import pdb;pdb.set_trace()
-        #if saver is not None and args.recovery_interval and (
-                #last_batch or (batch_idx + 1) % args.recovery_interval == 0):
-        #saver.save_recovery(epoch, batch_idx=batch_idx)
 
         if lr_scheduler is not None:
             lr_scheduler.step_update(num_updates=num_updates, metric=losses_m.avg)
